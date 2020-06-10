@@ -1,0 +1,30 @@
+{
+  "name": "mvp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-prod": "node server/index.js",
+    "start-dev": "nodemon server/index.js",
+    "update": "node database/update.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timyee90/Momentum-Charts.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/timyee90/Momentum-Charts/issues"
+  },
+  "homepage": "https://github.com/timyee90/Momentum-Charts#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "pg": "^8.2.1"
+  }
+}
