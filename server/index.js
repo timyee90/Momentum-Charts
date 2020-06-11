@@ -2,7 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const compression = require('compression');
-const db = require('../database/index.js');
+const db = require('../models/index.js');
 
 const app = express();
 

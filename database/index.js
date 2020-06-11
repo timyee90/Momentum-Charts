@@ -6,8 +6,12 @@ const pool = new Pool({
   port: config.PORT,
   user: config.USER,
   password: config.PASSWORD,
+  database: 'stocks',
 });
 
-module.exports.getStock = (ticker) => {
-  return pool.query(`SELECT * from ${ticker}`);
+module.exports = {
+  query: (text, value) => {
+    return pool.query(text, value);
+  },
+  pool: pool,
 };

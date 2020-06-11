@@ -1,6 +1,7 @@
 const axios = require('axios');
 const Papa = require('papaparse');
 const symbols = require('../symbols/index.js');
+const { insertStock } = require('../models/index.js');
 
 const startDate = 0;
 const endDate = 4102444800;
@@ -17,16 +18,32 @@ const getTicker = (ticker) => {
     });
 };
 
-const scrapeAll = (symbols) => {
-  getTicker(symbols[0])
+const scrapeOne = (symbol) => {
+  symbol = symbol.replace(/\./g, '');
+  return getTicker(symbol)
     .then((data) => {
-      console.log(Papa.parse(data, { header: true, delimiter: ',' }));
+      if (data !== undefined) {
+        const jsonData = Papa.parse(data, { header: true, delimiter: ',' });
+        insertStock(symbol, jsonData);
+      }
     })
     .catch((err) => {
       console.log(`Error in parsing: `, err);
     });
 };
-scrapeAll(symbols);
+
+const scrapeAll = (symbols) => {
+  const promiseArray = symbols.map((symbol) => {
+    return scrapeOne(symbol);
+  });
+  return Promise.all(promiseArray);
+};
+
+scrapeAll(symbols)
+  .then(() => console.log(`--- Done updating database ---`))
+  .catch((err) => {
+    console.log(`Error Updating database: `, err);
+  });
 
 module.exports = {
   getTicker: getTicker,
