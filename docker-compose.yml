@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  web:
+    build: .
+    volumes:
+      - .:/usr/app
+      - usr/app/node_modules
+    port: 3000:3000
+    environment:
+      - HOST=postgres
+    depends on:
+      - postgres
+
+  postgres:
+    image: postgres:9.6.2-alpine
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_DB: stocks
+    ports: 5432:5432
+    volumes:
+      - './pgdata/:/var/lib/postgresql/data'
