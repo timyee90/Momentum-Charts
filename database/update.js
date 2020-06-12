@@ -14,16 +14,22 @@ const getTicker = (ticker) => {
       return data;
     })
     .catch((err) => {
-      console.log(`Error in fetching from yahoo api: `, err);
+      console.log(`Error in fetching from yahoo api: `);
     });
 };
 
 const scrapeOne = (symbol) => {
-  symbol = symbol.replace(/\./g, '');
-  return getTicker(symbol)
+  if (symbol !== undefined) {
+    symbol = symbol.replace(/\./g, '');
+  }
+  if (symbol === undefined) {
+    console.log(`- scraping undefined -`);
+  }
+  getTicker(symbol)
     .then((data) => {
       if (data !== undefined) {
-        const jsonData = Papa.parse(data, { header: true, delimiter: ',' });
+        var jsonData = Papa.parse(data, { header: true, delimiter: ',' });
+        delete data;
         insertStock(symbol, jsonData);
       }
     })
@@ -32,15 +38,42 @@ const scrapeOne = (symbol) => {
     });
 };
 
-const scrapeAll = (symbols) => {
-  const promiseArray = symbols.map((symbol) => {
-    return scrapeOne(symbol);
-  });
+const scrapeTop = (symbols) => {
+  const promiseArray = [];
+  for (let i = 0; i < symbols.length / 2; i++) {
+    if (symbols[i] === undefined) {
+      console.log(`- 1. pushing an undefined symbol into promiseArray -`);
+    } else {
+      promiseArray.push(scrapeOne(symbols[i]));
+    }
+  }
   return Promise.all(promiseArray);
 };
 
-scrapeAll(symbols)
-  .then(() => console.log(`--- Done updating database ---`))
+const scrapeBot = (symbols) => {
+  console.log(
+    ` --------------------------------------------- Scraping2 function called`
+  );
+  const promiseArray = [];
+  for (let i = Math.floor(symbols.length / 2); i < symbols.length; i++) {
+    if (symbols[i] === undefined) {
+      console.log(`- 2. pushing an undefined symbol into promiseArray -`);
+    } else {
+      promiseArray.push(scrapeOne(symbols[i]));
+    }
+  }
+  return Promise.all(promiseArray);
+};
+
+scrapeTop(symbols)
+  .then(() => {
+    setTimeout(() => {
+      console.log(
+        `---------------------------------------- Scaping2 Began inside setTimeout`
+      );
+      scrapeBot(symbols).then(() => console.log(`--- Done Scraping ---`));
+    }, 60000);
+  })
   .catch((err) => {
     console.log(`Error Updating database: `, err);
   });
