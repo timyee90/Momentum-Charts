@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import Price from './components/currentPrice.jsx';
 import Search from './components/Search.jsx';
 import Favorite from './components/favorites.jsx';
+import MainChart from './components/mainChart.jsx';
 import axios from 'axios';
 
 const App = () => {
@@ -14,7 +15,7 @@ const App = () => {
       .get(`/ticker/${symbol}`)
       .then((data) => {
         // console.log(`DATA:`, data.data[0].data.data);
-        console.log(`DATA:`, data);
+        // console.log(`DATA:`, data);
         setPriceData(data.data[0].data.data);
       })
       .catch((err) => {
@@ -38,12 +39,23 @@ const App = () => {
     }
   };
 
+  const handleFavoriteClick = (symbol) => {
+    getTickerData(symbol)
+      .then(() => {
+        setTicker(symbol);
+      })
+      .catch((err) => {
+        console.log(`Error searching ticker: `, err);
+      });
+  };
+
   return (
     <div>
       <h1>Momentum Charts</h1>
       <Price prices={priceData} ticker={ticker} />
       <Search handleSearch={handleSearch} />
-      <Favorite ticker={ticker} />
+      <Favorite ticker={ticker} handleFavoriteClick={handleFavoriteClick} />
+      <MainChart prices={priceData} />
     </div>
   );
 };

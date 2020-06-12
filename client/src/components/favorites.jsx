@@ -1,13 +1,8 @@
-import React, { useState, useEffect } from 'react';
-// import FavoriteItem from './components/favoriteItem.jsx';
+import React, { useState } from 'react';
+import FavoriteItem from './favoriteItem.jsx';
 
-const Favorite = ({ ticker }) => {
+const Favorite = ({ ticker, handleFavoriteClick }) => {
   const [favorites, setFavorites] = useState([]);
-
-  const favesArray = JSON.parse(localStorage.getItem('favorites')) || [];
-  const faves = favesArray.map((item, id) => {
-    return <div key={id}>{item.toUpperCase()}</div>;
-  });
 
   const handleAdd = () => {
     const tempFav = JSON.parse(localStorage.getItem('favorites')) || [];
@@ -23,10 +18,25 @@ const Favorite = ({ ticker }) => {
     setFavorites(JSON.parse(localStorage.getItem('favorites')));
   };
 
+  const favesArray = JSON.parse(localStorage.getItem('favorites')) || [];
+  const faves = favesArray.map((item, id) => {
+    return (
+      <FavoriteItem
+        key={id}
+        id={id}
+        ticker={item}
+        handleFavoriteClick={handleFavoriteClick}
+        handleRemove={handleRemove}
+      />
+    );
+  });
+
   return (
     <>
       <h2>Watchlist</h2>
-      <button onClick={handleAdd}>Add to Watchlist</button>
+      <button className='watchlist-add' onClick={handleAdd}>
+        Add to Watchlist
+      </button>
       {faves}
     </>
   );
