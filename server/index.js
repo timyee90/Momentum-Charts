@@ -3,12 +3,15 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const db = require('../models/index.js');
+const path = require('path');
 
 const app = express();
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(compression());
+
+app.use(express.static(path.join(__dirname, '../client/')));
 
 app.get('/ticker/:id', (req, res) => {
   const id = req.params.id;
