@@ -33,11 +33,20 @@ const TopStocks = ({ stocks }) => {
       : '';
 
   return (
-    <div>
-      <h2>25 Best Performing Stocks</h2>
-      {stockArrayBest}
-      <h2>25 Worst Performing Stocks</h2>
-      {stockArrayWorst}
+    <div className='performance-container'>
+      <div>
+        <div classname='performance-sub-container'>
+          <h2>25 Best Performing Stocks</h2>
+        </div>
+        {stockArrayBest}
+      </div>
+      <div></div>
+      <div>
+        <div classname='performance-sub-container'>
+          <h2>25 Worst Performing Stocks</h2>
+        </div>
+        {stockArrayWorst}
+      </div>
     </div>
   );
 };

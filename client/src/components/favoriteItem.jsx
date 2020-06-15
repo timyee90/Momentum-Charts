@@ -37,10 +37,12 @@ const FavoriteItem = ({ id, ticker, handleFavoriteClick, handleRemove }) => {
 
   return (
     <div className='price-container'>
-      {prices}
-      <button onClick={() => handleRemove(id)}>
-        <span>Remove</span>
-      </button>
+      <div>{prices}</div>
+      <div>
+        <button onClick={() => handleRemove(id)}>
+          <span>Remove</span>
+        </button>
+      </div>
     </div>
   );
 };

@@ -8,11 +8,17 @@
 
 .price-container {
   display: flex;
-  justify-content: left;
+  /* grid-gap: 10px; */
 }
 
 .prices {
   box-sizing: border-box;
   margin-left: 10px;
   margin-right: 10px;
+}
+
+.performance-container {
+  display: flex;
+  grid-gap: 10px;
+  align-items: center;
 }
