@@ -34,7 +34,6 @@ const App = () => {
     return axios
       .get(`/top25/`)
       .then(({ data }) => {
-        // console.log(data);
         const dataClean = data.filter((item) => {
           if (item !== null) return item;
         });
