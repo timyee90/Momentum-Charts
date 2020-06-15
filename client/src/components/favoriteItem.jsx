@@ -12,8 +12,8 @@ const FavoriteItem = ({ id, ticker, handleFavoriteClick, handleRemove }) => {
         throw err;
       })
       .then(({ data }) => {
-        if (data !== undefined && data.length > 0) {
-          setPriceData(data);
+        if (data !== undefined && data.data.data.length > 0) {
+          setPriceData(data.data.data);
         }
       })
       .catch((err) => {

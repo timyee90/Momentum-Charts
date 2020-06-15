@@ -17,7 +17,11 @@ module.exports = {
   },
   analysis: {
     get: (req, res) => {
-      // db.performAnalysis
+      db.performAnalysis()
+        .then((data) => {
+          res.send(data);
+        })
+        .catch((err) => console.log(`Error performing analysis`, err));
     },
   },
 };

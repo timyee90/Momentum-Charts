@@ -3,12 +3,14 @@ import ReactDOM from 'react-dom';
 import Price from './components/currentPrice.jsx';
 import Search from './components/Search.jsx';
 import Favorite from './components/favorites.jsx';
+import TopStocks from './components/topStocks.jsx';
 // import MainChart from './components/mainChart.jsx';
 import axios from 'axios';
 
 const App = () => {
   const [ticker, setTicker] = useState('aapl');
   const [priceData, setPriceData] = useState([]);
+  const [stockPerformance, setStockPerformance] = useState([]);
 
   const getTickerData = (symbol = ticker) => {
     return axios
@@ -17,8 +19,9 @@ const App = () => {
         throw err;
       })
       .then(({ data }) => {
-        if (data !== undefined && data.length > 0) {
-          setPriceData(data);
+        if (data.data !== undefined && data.data.data.length > 0) {
+          setPriceData(data.data.data);
+          setTicker(symbol);
         }
       })
       .catch((err) => {
@@ -27,19 +30,31 @@ const App = () => {
       });
   };
 
+  const getAnalysis = () => {
+    return axios
+      .get(`/top25/`)
+      .then(({ data }) => {
+        // console.log(data);
+        const dataClean = data.filter((item) => {
+          if (item !== null) return item;
+        });
+        setStockPerformance(dataClean);
+      })
+      .catch((err) => {
+        console.log(`Error in fetching: `, err);
+      });
+  };
+
   useEffect(() => {
     getTickerData();
+    getAnalysis();
   }, []);
 
   const handleSearch = (newTicker) => {
     if (newTicker !== ticker && newTicker !== '') {
-      getTickerData(newTicker)
-        .then(() => {
-          setTicker(newTicker);
-        })
-        .catch((err) => {
-          console.log(`Error searching ticker: `, err);
-        });
+      getTickerData(newTicker).catch((err) => {
+        console.log(`Error searching ticker: `, err);
+      });
     }
   };
 
@@ -66,6 +81,7 @@ const App = () => {
         prices={priceData}
         handleFavoriteClick={handleFavoriteClick}
       />
+      <TopStocks stocks={stockPerformance} />
       {/* <MainChart prices={priceData} /> */}
     </div>
   );
