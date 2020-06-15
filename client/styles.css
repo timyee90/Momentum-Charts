@@ -1,1 +1,18 @@
+.negative {
+  color: red;
+}
 
+.positive {
+  color: green;
+}
+
+.price-container {
+  display: flex;
+  justify-content: left;
+}
+
+.prices {
+  box-sizing: border-box;
+  margin-left: 10px;
+  margin-right: 10px;
+}

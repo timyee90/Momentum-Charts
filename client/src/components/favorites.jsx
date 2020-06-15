@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import FavoriteItem from './favoriteItem.jsx';
 
-const Favorite = ({ ticker, handleFavoriteClick }) => {
+const Favorite = ({ ticker, prices, handleFavoriteClick }) => {
   const [favorites, setFavorites] = useState([]);
 
   const handleAdd = () => {
@@ -25,6 +25,7 @@ const Favorite = ({ ticker, handleFavoriteClick }) => {
         key={id}
         id={id}
         ticker={item}
+        prices={prices}
         handleFavoriteClick={handleFavoriteClick}
         handleRemove={handleRemove}
       />

@@ -1,9 +1,15 @@
 const db = require('../database/index.js');
+const symbols = require('../symbols/index.js');
 
 module.exports.getStockTicker = (ticker) => {
-  return db.query(`SELECT * from ${ticker}`, []).catch((err) => {
-    console.log(`Error in model layer: `, err);
-  });
+  return db
+    .query(`SELECT * from ${ticker}`, [])
+    .then((data) => {
+      return data.rows[0].data.data;
+    })
+    .catch((err) => {
+      console.log(`Error in database query: `, err);
+    });
 };
 
 module.exports.insertStock = async (ticker, jsonData) => {
@@ -17,13 +23,17 @@ module.exports.insertStock = async (ticker, jsonData) => {
       await client.query(`INSERT INTO ${ticker} (data) values ($1);`, [
         jsonData,
       ]);
-      delete jsonData;
-      // global.gc(true);
-      // console.log(`--- Done inserting ${ticker} into postgres ---`);
     } catch (err) {
       console.log(`Error: `, err);
     } finally {
       client.release();
     }
   }
+};
+
+module.exports.performAnalysis = () => {
+  // pull all stock data
+  // map the data to last 260 trading days
+  // sort stock returns
+  // return top and bottom stocks
 };

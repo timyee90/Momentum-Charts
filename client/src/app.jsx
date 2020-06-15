@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import Price from './components/currentPrice.jsx';
 import Search from './components/Search.jsx';
 import Favorite from './components/favorites.jsx';
-import MainChart from './components/mainChart.jsx';
+// import MainChart from './components/mainChart.jsx';
 import axios from 'axios';
 
 const App = () => {
@@ -13,12 +13,16 @@ const App = () => {
   const getTickerData = (symbol = ticker) => {
     return axios
       .get(`/ticker/${symbol}`)
-      .then((data) => {
-        // console.log(`DATA:`, data.data[0].data.data);
-        // console.log(`DATA:`, data);
-        setPriceData(data.data[0].data.data);
+      .catch((err) => {
+        throw err;
+      })
+      .then(({ data }) => {
+        if (data !== undefined && data.length > 0) {
+          setPriceData(data);
+        }
       })
       .catch((err) => {
+        console.log(`Error in fetching: `, err);
         throw err;
       });
   };
@@ -41,6 +45,9 @@ const App = () => {
 
   const handleFavoriteClick = (symbol) => {
     getTickerData(symbol)
+      .catch((err) => {
+        throw err;
+      })
       .then(() => {
         setTicker(symbol);
       })
@@ -51,11 +58,15 @@ const App = () => {
 
   return (
     <div>
-      <h1>Momentum Charts</h1>
+      <h1>Momentus</h1>
       <Price prices={priceData} ticker={ticker} />
       <Search handleSearch={handleSearch} />
-      <Favorite ticker={ticker} handleFavoriteClick={handleFavoriteClick} />
-      <MainChart prices={priceData} />
+      <Favorite
+        ticker={ticker}
+        prices={priceData}
+        handleFavoriteClick={handleFavoriteClick}
+      />
+      {/* <MainChart prices={priceData} /> */}
     </div>
   );
 };

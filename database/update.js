@@ -14,22 +14,16 @@ const getTicker = (ticker) => {
       return data;
     })
     .catch((err) => {
-      console.log(`Error in fetching from yahoo api: `);
+      console.log(`Error in fetching from yahoo api: `, err);
     });
 };
 
 const scrapeOne = (symbol) => {
-  if (symbol !== undefined) {
-    symbol = symbol.replace(/\./g, '');
-  }
-  if (symbol === undefined) {
-    console.log(`- scraping undefined -`);
-  }
-  getTicker(symbol)
+  symbol = symbol.replace(/\./g, '');
+  return getTicker(symbol)
     .then((data) => {
       if (data !== undefined) {
-        var jsonData = Papa.parse(data, { header: true, delimiter: ',' });
-        delete data;
+        const jsonData = Papa.parse(data, { header: true, delimiter: ',' });
         insertStock(symbol, jsonData);
       }
     })
@@ -38,42 +32,15 @@ const scrapeOne = (symbol) => {
     });
 };
 
-const scrapeTop = (symbols) => {
-  const promiseArray = [];
-  for (let i = 0; i < symbols.length / 2; i++) {
-    if (symbols[i] === undefined) {
-      console.log(`- 1. pushing an undefined symbol into promiseArray -`);
-    } else {
-      promiseArray.push(scrapeOne(symbols[i]));
-    }
-  }
+const scrapeAll = (symbols) => {
+  const promiseArray = symbols.map((symbol) => {
+    return scrapeOne(symbol);
+  });
   return Promise.all(promiseArray);
 };
 
-const scrapeBot = (symbols) => {
-  console.log(
-    ` --------------------------------------------- Scraping2 function called`
-  );
-  const promiseArray = [];
-  for (let i = Math.floor(symbols.length / 2); i < symbols.length; i++) {
-    if (symbols[i] === undefined) {
-      console.log(`- 2. pushing an undefined symbol into promiseArray -`);
-    } else {
-      promiseArray.push(scrapeOne(symbols[i]));
-    }
-  }
-  return Promise.all(promiseArray);
-};
-
-scrapeTop(symbols)
-  .then(() => {
-    setTimeout(() => {
-      console.log(
-        `---------------------------------------- Scaping2 Began inside setTimeout`
-      );
-      scrapeBot(symbols).then(() => console.log(`--- Done Scraping ---`));
-    }, 60000);
-  })
+scrapeAll(symbols)
+  .then(() => console.log(`--- Done updating database ---`))
   .catch((err) => {
     console.log(`Error Updating database: `, err);
   });
