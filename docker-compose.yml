@@ -1,16 +1,16 @@
 version: '3.8'
 services:
-  web:
-    build: .
-    volumes:
-      - .:/usr/app
-      - /usr/app/node_modules
-    ports:
-      - 3000:3000
-    environment:
-      - HOST=postgres
-    depends_on:
-      - postgres
+  # web:
+  # build: .
+  # volumes:
+  #   - .:/usr/app
+  #   - /usr/app/node_modules
+  # ports:
+  #   - 3000:3000
+  # environment:
+  #   - HOST=postgres
+  # depends_on:
+  #   - postgres
 
   postgres:
     image: postgres:9.6.2-alpine
@@ -23,5 +23,5 @@ services:
       - './pgdata/:/var/lib/postgresql/data'
   redis-client:
     image: redis:alpine
-    # ports:
-    #   - 6379:6379
+    ports:
+      - 6379:6379

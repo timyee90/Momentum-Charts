@@ -8,7 +8,6 @@
 
 .price-container {
   display: flex;
-  /* grid-gap: 10px; */
 }
 
 .prices {
@@ -20,5 +19,4 @@
 .performance-container {
   display: flex;
   grid-gap: 10px;
-  align-items: center;
 }
