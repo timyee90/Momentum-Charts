@@ -17,6 +17,15 @@ $ npm install
 ```sh
 $ npm run build-prod
 ```
+create a database/config.js file and create a username & password
+```node
+module.exports.config = {
+  HOST: process.env.HOST || 'localhost',
+  PORT: process.env.PORT || 10000,
+  USER: 'CREATE_USER_NAME',
+  PASSWORD: 'CREATE_PASSWORD',
+};
+```
 
 [Install Docker](https://docs.docker.com/get-docker/) then run:
 ```sh
