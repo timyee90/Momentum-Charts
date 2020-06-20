@@ -10,5 +10,3 @@ module.exports.movingAverage = (prices, days) => {
     }, 0) / days
   );
 };
-
-const test = 0;
