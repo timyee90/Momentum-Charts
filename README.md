@@ -17,10 +17,19 @@ $ npm install
 ```sh
 $ npm run build-prod
 ```
+2. create a database/config.js file and create a username & password
+```node
+module.exports.config = {
+  HOST: process.env.HOST || 'localhost',
+  PORT: process.env.PORT || 10000,
+  USER: 'CREATE_USER_NAME',
+  PASSWORD: 'CREATE_PASSWORD',
+};
+```
 
-[Install Docker](https://docs.docker.com/get-docker/) then run:
+3. [Install Docker](https://docs.docker.com/get-docker/) then run:
 ```sh
 docker-compose up --build
 ```
 
-2. open [localhost:3000](http://localhost:3000) in your browser
+4. open [localhost:3000](http://localhost:3000) in your browser
