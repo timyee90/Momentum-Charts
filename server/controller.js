@@ -1,5 +1,6 @@
 const db = require('../models/index.js');
 const redis = require('../database/redis.js');
+const expirationTime = 24 * 60;
 
 module.exports = {
   ticker: {
@@ -8,7 +9,7 @@ module.exports = {
       const id = req.params.id;
       db.getStockTicker(id)
         .then((data) => {
-          redis.set(url, JSON.stringify(data));
+          redis.set(url, JSON.stringify(data), 'EX', expirationTime);
           res.send(data);
         })
         .catch((err) => {
@@ -22,7 +23,7 @@ module.exports = {
       const url = req.originalUrl;
       db.performAnalysis()
         .then((data) => {
-          redis.set(url, JSON.stringify(data));
+          redis.set(url, JSON.stringify(data), 'EX', expirationTime);
           res.send(data);
         })
         .catch((err) => console.log(`Error performing analysis`, err));
