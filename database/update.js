@@ -6,6 +6,10 @@ const { insertStock } = require('../models/index.js');
 const startDate = 0;
 const endDate = 4102444800;
 
+const useInterval = false;
+const interval = 24 * 60 * 1000;
+
+// get request to yahoo finance for a specific ticker
 const getTicker = (ticker) => {
   const baseUrl = `https://query1.finance.yahoo.com/v7/finance/download/${ticker}?period1=${startDate}&period2=${endDate}&interval=1d&events=history`;
   return axios
@@ -18,6 +22,7 @@ const getTicker = (ticker) => {
     });
 };
 
+// scrapes one stock ticker
 const scrapeOne = (symbol) => {
   symbol = symbol.replace(/\./g, '');
   return getTicker(symbol)
@@ -32,6 +37,7 @@ const scrapeOne = (symbol) => {
     });
 };
 
+// scrapes a list of stock tickers
 const scrapeAll = (symbols) => {
   const promiseArray = symbols.map((symbol) => {
     return scrapeOne(symbol);
@@ -39,11 +45,24 @@ const scrapeAll = (symbols) => {
   return Promise.all(promiseArray);
 };
 
-scrapeAll(symbols)
-  .then(() => console.log(`--- Done updating database ---`))
-  .catch((err) => {
-    console.log(`Error Updating database: `, err);
-  });
+// execute the stock scaper
+const fullScape = () => {
+  scrapeAll(symbols)
+    .then(() => console.log(`--- Done updating database ---`))
+    .catch((err) => {
+      console.log(`Error Updating database: `, err);
+    });
+};
+
+// automate the stock scraper
+const automateScape = (repeat) => {
+  fullScape();
+  if (repeat) {
+    setInterval(fullScape, interval);
+  }
+};
+
+automateScape(useInterval);
 
 module.exports = {
   getTicker: getTicker,
