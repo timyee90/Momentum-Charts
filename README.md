@@ -7,7 +7,7 @@ Momentus seeks to provide high performance stock ticker lookup and analysis for 
 1. Momentus scrapes Yahoo Finance API and stores results in PostgreSQL database
 2. Momentus uses Redis caching to provide speedy queries
 3. Momentus allows for full resource utilization using clusters on node.js
-4. Momentus uses in-house API to deliver stock ticker lookup capabilites
+4. Momentus uses in-house API to deliver stock ticker lookup capabilities
 5. Momentus keeps track of stock ticker favorites using localStorage
 6. Momentus can perform stock ranking and display the best/worst performing stocks
 
